@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        loadFragment(new HomeFragment());
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
                 return loadFragment(fragment);
             }
         });
+        /*Set Home fragment as default selected.*/
+        bottomNavigationView.setSelectedItemId(R.id.action_home);
     }
 
     /*Method to call to load the fragment.*/
