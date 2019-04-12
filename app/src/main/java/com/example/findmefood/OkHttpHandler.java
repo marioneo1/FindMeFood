@@ -32,18 +32,20 @@ public class OkHttpHandler extends AsyncTask<String,Void,Response> {
     protected Response doInBackground(String... params){
         //TODO For params need to have an iterated offset 50n P2; Add Realtime Lat/Long P1; and Maybe the alias to search for later P1 might implement somewhere else.
 
+        String term = params[0], latitude = params[1], longitude = params[2], offset = params[3];
+
         HttpUrl url = new HttpUrl.Builder()
                 .scheme("https")
                 .host("api.yelp.com")
                 .addPathSegment("v3")
                 .addPathSegment("businesses")
                 .addPathSegment("search")
-                .addQueryParameter("term","restaurants")
-                .addQueryParameter("latitude","37.72856")
-                .addQueryParameter("longitude","-122.47688")
+                .addQueryParameter("term",term)
+                .addQueryParameter("latitude",latitude)
+                .addQueryParameter("longitude",longitude)
                 .addQueryParameter("limit","50")
                 .addQueryParameter("sort_by", "distance")
-                .addQueryParameter("offset","0")
+                .addQueryParameter("offset", offset)
                 .build();
 
         //TODO GET Real time LAT/LONG of user.

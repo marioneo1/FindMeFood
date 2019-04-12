@@ -39,7 +39,7 @@ public class FoodDialogFragment extends DialogFragment {
         mActionYes = view.findViewById(R.id.action_yes);
         mActionNo = view.findViewById(R.id.action_no);
         mCategory = view.findViewById(R.id.category);
-        mCategory.setText(category);
+        mCategory.setText(title);
 
 
         mActionNo.setOnClickListener(new View.OnClickListener() {
