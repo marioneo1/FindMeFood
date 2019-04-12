@@ -11,9 +11,9 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-class LoggingInterceptor implements Interceptor {
+class YelpLoggingInterceptor implements Interceptor {
     private String tokenType;
-    private static final String TAG = LoggingInterceptor.class.getName();
+    private static final String TAG = YelpLoggingInterceptor.class.getName();
     private Logger logger;
     public ApiKey apiKey = new ApiKey("V1zoNqS9vcPyhFETp-mWNz49yuiRsJo9fBzpc1Ib2ONFsszZHIfT6-wG7gLS9Ok_ZrFT2sLiHDkILDW0Al-LKlo8O2fy_XfJFzVQPy8AxavUw-i-gEMeyjaN6BzMWnYx", "Bearer ");
 
@@ -24,13 +24,8 @@ class LoggingInterceptor implements Interceptor {
                 .header("Accept", "application/json")
                 .header("Authorization", apiKey.getTokenType() + apiKey.getApiKey())
                 .build();
-
         Log.d(TAG,"Sending request " +request.url() + " on :\n" + request.headers());
 
-        Response response = chain.proceed(request);
-
-        Log.d(TAG,"Received response for " + response.request().url() + " on :\n" + response.headers() + response.body().string());
-
-        return response;
+        return chain.proceed(request);
     }
 }

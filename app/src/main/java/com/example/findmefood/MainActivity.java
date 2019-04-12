@@ -1,6 +1,6 @@
 package com.example.findmefood;
 
-import android.app.Activity;
+
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -8,8 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
+
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
@@ -18,12 +17,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        loadFragment(new HomeFragment());
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 Fragment fragment = null;
+
                 /*Fragment selection*/
                 switch (menuItem.getItemId()) {
                     case R.id.action_home:
@@ -42,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
                 return loadFragment(fragment);
             }
         });
+
         /*Set Home fragment as default selected.*/
         bottomNavigationView.setSelectedItemId(R.id.action_home);
     }
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     /*Method to call to load the fragment.*/
     private boolean loadFragment(Fragment fragment){
         if(fragment!=null){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment,"CurrentFragment").commit();
             return true;
         }
         return false;
