@@ -30,7 +30,7 @@ public class OkHttpHandler extends AsyncTask<String,Void,Response> {
 
     @Override
     protected Response doInBackground(String... params){
-        //TODO For params need to have an iterated offset 50n P2; Add Realtime Lat/Long P1; and Maybe the alias to search for later P1 might implement somewhere else.
+        //TODO For params need to have an iterated offset 50n P2; and Maybe the alias to search for later P1 might implement somewhere else.
 
         String term = params[0], latitude = params[1], longitude = params[2], offset = params[3];
 
@@ -48,8 +48,6 @@ public class OkHttpHandler extends AsyncTask<String,Void,Response> {
                 .addQueryParameter("offset", offset)
                 .build();
 
-        //TODO GET Real time LAT/LONG of user.
-
 //        HttpUrl testUrl = new HttpUrl.Builder()
 //                .scheme(params[0])
 //                .host("httpbin.org")
@@ -64,14 +62,7 @@ public class OkHttpHandler extends AsyncTask<String,Void,Response> {
         Log.d(TAG,"1st Request: " + request.toString());
         try{
             Response response = client.newCall(request).execute();
-//            String responseBody = response.body().string();
-//            try {
-//                Thread.sleep(6000);
-//            }
-//            catch (InterruptedException e)
-//            {
-//
-//            }
+
             Log.d(TAG,"Received response for " + response.request().url());
             return response;
         }
