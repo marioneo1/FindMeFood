@@ -16,18 +16,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class FoodDialogFragment extends DialogFragment {
-    private static String TAG = DialogFragment.class.getName();
 
     public interface OnInputSelected{
         void yes(String input);
         void no();
     }
+
+    private static String TAG = DialogFragment.class.getName();
     public OnInputSelected mOnInputSelected;
-
-
     private TextView mCategory;
     private TextView mActionYes, mActionNo;
-
 
     @Nullable
     @Override
