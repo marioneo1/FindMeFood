@@ -1,8 +1,9 @@
 package com.example.findmefood.models;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Location {
+public class Location implements Serializable {
 
     List<String> display_address;
 

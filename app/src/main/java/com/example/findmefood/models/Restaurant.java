@@ -2,9 +2,11 @@ package com.example.findmefood.models;
 
 import android.support.annotation.NonNull;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Restaurant {
+@SuppressWarnings("serial") //hide compiler warning for serial
+public class Restaurant implements Serializable {
     private String name;
     private String alias;
     private String phone;

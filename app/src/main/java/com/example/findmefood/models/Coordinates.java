@@ -1,6 +1,8 @@
 package com.example.findmefood.models;
 
-public class Coordinates {
+import java.io.Serializable;
+
+public class Coordinates implements Serializable {
     private double latitude;
     private double longitude;
 
@@ -10,5 +12,13 @@ public class Coordinates {
 
     public double getLongitude() {
         return longitude;
+    }
+
+    @Override
+    public String toString() {
+        return "Coordinates{" +
+                "latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
     }
 }

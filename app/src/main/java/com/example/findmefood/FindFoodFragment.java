@@ -1,6 +1,7 @@
 package com.example.findmefood;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.LocationManager;
@@ -182,11 +183,16 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
             @Override
             public void processFinished(Response response) {
                 Log.d(TAG,"ENDPOINT");
-                //TODO Make new DialogFrag w/ all the needed stuff. Details, Option to navigate,
+                //TODO Make w/ all the needed stuff. Details, Option to navigate,
                 try{
                     String body = response.body().string();
 //                    TODO make class to contain JSON data like below.
-//                    SearchRestaurantsResults searchRestaurants = gson.fromJson(body, SearchRestaurantsResults.class);
+                    Log.d(TAG,"Response data: " + body);
+                    SearchRestaurantsResults searchRestaurants = gson.fromJson(body, SearchRestaurantsResults.class);
+                    Intent intent = new Intent(getActivity().getBaseContext(),ChooseRestaurantActivity.class);
+                    intent.putExtra("restaurantSearchResult",searchRestaurants);
+                    startActivity(intent);
+
                 }
                 catch (IOException e){
                     Log.e(TAG,e.toString());

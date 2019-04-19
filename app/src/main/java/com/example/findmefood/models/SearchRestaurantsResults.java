@@ -1,8 +1,9 @@
 package com.example.findmefood.models;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class SearchRestaurantsResults {
+public class SearchRestaurantsResults implements Serializable {
 
     List<Restaurant> businesses;
 

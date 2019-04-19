@@ -1,6 +1,8 @@
 package com.example.findmefood.models;
 
-public class YelpCategory {
+import java.io.Serializable;
+
+public class YelpCategory implements Serializable {
     String alias;
     String title;
 
