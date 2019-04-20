@@ -22,31 +22,92 @@ public class OkHttpHandler extends AsyncTask<String,Void,Response> {
         this.delegate = delegate;
     }
 
-    OkHttpClient client = new OkHttpClient.Builder()
-            .addInterceptor(new YelpLoggingInterceptor())
-            .build();
 
+//    OkHttpClient client = new OkHttpClient.Builder()
+//            .addInterceptor(new YelpLoggingInterceptor())
+//            .build();
 //    OkHttpClient client = new OkHttpClient();
 
     @Override
     protected Response doInBackground(String... params){
         //TODO For params need to have an iterated offset 50n P2; and Maybe the alias to search for later P1 might implement somewhere else.
 
-        String term = params[0], latitude = params[1], longitude = params[2], offset = params[3];
+        String flag = params[0], term, latitude, longitude, offset, destination_address;
+//        String term = params[0], latitude = params[1], longitude = params[2], offset = params[3], flag;
 
-        HttpUrl url = new HttpUrl.Builder()
-                .scheme("https")
-                .host("api.yelp.com")
-                .addPathSegment("v3")
-                .addPathSegment("businesses")
-                .addPathSegment("search")
-                .addQueryParameter("term",term)
-                .addQueryParameter("latitude",latitude)
-                .addQueryParameter("longitude",longitude)
-                .addQueryParameter("limit","50")
-                .addQueryParameter("sort_by", "distance")
-                .addQueryParameter("offset", offset)
-                .build();
+        HttpUrl url;
+        OkHttpClient client;
+
+        /*For Yelp*/
+        if(flag.contains("0")){
+            client = new OkHttpClient.Builder()
+                    .addInterceptor(new YelpLoggingInterceptor())
+                    .build();
+
+            term = params[1];
+            latitude = params[2];
+            longitude = params[3];
+            offset = params[4];
+
+            url = new HttpUrl.Builder()
+                    .scheme("https")
+                    .host("api.yelp.com")
+                    .addPathSegment("v3")
+                    .addPathSegment("businesses")
+                    .addPathSegment("search")
+                    .addQueryParameter("term",term)
+                    .addQueryParameter("latitude",latitude)
+                    .addQueryParameter("longitude",longitude)
+                    .addQueryParameter("limit","50")
+                    .addQueryParameter("sort_by", "distance")
+                    .addQueryParameter("offset", offset)
+                    .build();
+        }
+        /*For Google*/
+        else{
+            client = new OkHttpClient();
+            latitude = params[1];
+            longitude = params[2];
+            destination_address = params[3];
+
+
+            url = new HttpUrl.Builder()
+                    .scheme("https")
+                    .host("www.google.com")
+                    .addPathSegment("maps")
+                    .addPathSegment("search")
+                    .addQueryParameter("origin",latitude+","+longitude)
+                    .addQueryParameter("destination",destination_address)
+                    .build();
+        }
+
+//        HttpUrl url = new HttpUrl.Builder()
+//                .scheme("https")
+//                .host("api.yelp.com")
+//                .addPathSegment("v3")
+//                .addPathSegment("businesses")
+//                .addPathSegment("search")
+//                .addQueryParameter("term",term)
+//                .addQueryParameter("latitude",latitude)
+//                .addQueryParameter("longitude",longitude)
+//                .addQueryParameter("limit","50")
+//                .addQueryParameter("sort_by", "distance")
+//                .addQueryParameter("offset", offset)
+//                .build();
+
+//        HttpUrl url = new HttpUrl.Builder()
+//                .scheme("https")
+//                .host("api.yelp.com")
+//                .addPathSegment("v3")
+//                .addPathSegment("businesses")
+//                .addPathSegment("search")
+//                .addQueryParameter("term",term)
+//                .addQueryParameter("latitude",latitude)
+//                .addQueryParameter("longitude",longitude)
+//                .addQueryParameter("limit","50")
+//                .addQueryParameter("sort_by", "distance")
+//                .addQueryParameter("offset", offset)
+//                .build();
 
 //        HttpUrl testUrl = new HttpUrl.Builder()
 //                .scheme(params[0])

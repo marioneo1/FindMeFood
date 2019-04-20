@@ -1,5 +1,7 @@
 package com.example.findmefood;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,10 +16,26 @@ import android.widget.TextView;
 import com.example.findmefood.models.Coordinates;
 import com.example.findmefood.models.Restaurant;
 
+import okhttp3.HttpUrl;
+
 
 public class ChooseRestaurantFragment extends Fragment{
     private static final String TAG = ChooseRestaurantFragment.class.getName();
     public static final String RESTAURANT = "RESTAURANT";
+    public enum Mode {
+
+        DRIVE("d"),BIKE("b"),MOTOR("l"),WALK("w");
+
+        private String mode;
+
+            Mode(String theMode){
+                this.mode = theMode;
+            }
+
+            private String getMode(){
+                return mode;
+            }
+    }
 
     public static final ChooseRestaurantFragment newInstance(Restaurant restaurant){
         ChooseRestaurantFragment mFrag = new ChooseRestaurantFragment();
@@ -52,10 +70,14 @@ public class ChooseRestaurantFragment extends Fragment{
             public void onClick(View v) {
                 //Launch Navigate Activity
                 Log.d(TAG, "Restaurant : " + name + " with " + coordinates.toString());
-//                Intent intent = new Intent(getActivity().getBaseContext(), MapsActivity.class);
-//                intent.putExtra("restaurant",restaurant);
-//                startActivity(intent);
+                Double lat = coordinates.getLatitude();
+                Double lon = coordinates.getLongitude();
 
+                Uri gmmIntentUri = Uri.parse("google.navigation:q=" +lat.toString()+ "," + lon.toString()
+                        + "&mode="+ Mode.DRIVE.getMode());
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
             }
         });
 

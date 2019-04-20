@@ -44,6 +44,7 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
     private static LinkedHashSet<String> found_category_titles;
     private static LinkedHashSet<String> found_categories;
     private static int offset_calls;
+    private static String YELP_FLAG = "0";
 
     @Nullable
     @Override
@@ -98,7 +99,7 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
                 }
             }
         });
-        okHttpHandler.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, term,lat.toString(),lon.toString(),offset.toString());
+        okHttpHandler.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, YELP_FLAG,term,lat.toString(),lon.toString(),offset.toString());
     }
 
     private void handleCategory(){
@@ -190,7 +191,7 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
 
             }
         });
-        okHttpHandler.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, term,lat.toString(),lon.toString(),offset.toString());
+        okHttpHandler.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, YELP_FLAG,term,lat.toString(),lon.toString(),offset.toString());
     }
 
     /*If answered no on Dialog frag, iterate index and search again.*/
