@@ -85,6 +85,7 @@ public class ChooseRestaurantFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 //Launch Information Activity
+                //TODO
             }
         });
 
