@@ -13,11 +13,13 @@ public class Restaurant implements Serializable {
     private String display_phone;
     private String price;
     private String image_url;
+    private String url;
     private Boolean is_closed;
     private double rating;
     private double distance;
     private Location location;
     private Coordinates coordinates;
+
 
     public List<YelpCategory> getCategories() {
         return categories;
@@ -28,6 +30,8 @@ public class Restaurant implements Serializable {
     public String getImage_url() {
         return image_url;
     }
+
+    public String getUrl() {return url;}
 
     public Location getLocation() {
         return location;

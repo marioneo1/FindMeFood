@@ -29,13 +29,13 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyADn9hLbqVseBz5gtYjO2rTLKsHsfnZgOQ" />
+            android:value="@string/google_maps_api_key" />
 
         <activity android:name=".ChooseRestaurantActivity" />
 
         <meta-data
             android:name="YELP_API_TOKEN"
-            android:value="Bearer V1zoNqS9vcPyhFETp-mWNz49yuiRsJo9fBzpc1Ib2ONFsszZHIfT6-wG7gLS9Ok_ZrFT2sLiHDkILDW0Al-LKlo8O2fy_XfJFzVQPy8AxavUw-i-gEMeyjaN6BzMWnYx" />
+            android:value="@string/yelp_api_key" />
 
         <activity android:name=".MainActivity">
             <intent-filter>

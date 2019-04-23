@@ -1,6 +1,9 @@
 package com.example.findmefood;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +38,7 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
     private static final int OFFSET_LIMIT = 20;
     Button start_ffood_button;
     TextView mTextView;
+    ProgressBar mProgressBar;
     public static int index = 0;
     private static ArrayList<String> restaurant_categories;
     private static ArrayList<String> restaurant_category_titles;
@@ -44,14 +49,18 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
     private static LinkedHashSet<String> found_category_titles;
     private static LinkedHashSet<String> found_categories;
     private static int offset_calls;
-    private static String YELP_FLAG = "0";
+    private static String CATEGORY_SEARCH_FLAG = "0";
+    private static String RESTAURANT_SEARCH_FLAG = "1";
+    private static Context mContext;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_findfood,container,false);
         start_ffood_button = view.findViewById(R.id.startffood);
+        mProgressBar = view.findViewById(R.id.ff_progressBar);
         mTextView = view.findViewById(R.id.ffoodtextview);
+        mContext = getContext();
         gson = new Gson();
         locationHandler = new LocationHandler(getActivity());
         lat = locationHandler.getLat();
@@ -61,21 +70,31 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
         start_ffood_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Reset values back.
-                index=0;
-                offset_calls=0;
-                restaurant_categories = new ArrayList<String>();
-                restaurant_category_titles = new ArrayList<String>();
-                found_categories = new LinkedHashSet<String>();
-                found_category_titles = new LinkedHashSet<String>();
-                requestFoodCategory();
+                //Todo Make an interface to make buttons in main activity not selectable.
+                //If internet is available
+                if(isConnectedToNetwork(mContext)){
+                    mProgressBar.setVisibility(View.VISIBLE);
+                    //Reset values back.
+                    index=0;
+                    offset_calls=0;
+                    restaurant_categories = new ArrayList<String>();
+                    restaurant_category_titles = new ArrayList<String>();
+                    found_categories = new LinkedHashSet<String>();
+                    found_category_titles = new LinkedHashSet<String>();
+                    //Request call
+                    requestFoodCategory();
+                }
+                else{ //if there's no internet
+                    Toast.makeText(getActivity(),"Please ensure that you're connected to an internet source", Toast.LENGTH_LONG).show();
+                    Log.d(TAG,"No network connection found");
+                }
+
             }
         });
         return view;
     }
 
     private void requestFoodCategory(){
-        Log.d(TAG,"FFoodFragment Start OKHTTP");
         Integer offset = (50)*offset_calls++;
         String term = "restaurants";
         lat = locationHandler.getLat();
@@ -85,21 +104,27 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
         OkHttpHandler okHttpHandler = new OkHttpHandler(new OkHttpHandler.OkHttpResponse() {
             @Override
             public void processFinished(Response response) {
+                mProgressBar.setVisibility(View.INVISIBLE);
                 try{
                     /* TODO Fill in the needed details
-                     *  Blacklist
-                     *  Offset Issue */
-                    String body = response.body().string();
-                    Log.d(TAG,"Response data: " + body);
-                    parseCategoryResponseBody(body);
-                    handleCategory();
+                     *  Blacklist*/
+                    if (response != null){
+                        String body = response.body().string();
+                        Log.d(TAG,"Response data: " + body);
+                        parseCategoryResponseBody(body);
+                        handleCategory();
+                    }
+                    else{
+                        Log.d(TAG,"Null body");
+                        Toast.makeText(mContext,"Couldn't find nearby locations, please make sure you're connected to a reliable internet source",Toast.LENGTH_LONG).show();
+                    }
                 }
                 catch (IOException e){
                     Log.e(TAG,e.toString());
                 }
             }
         });
-        okHttpHandler.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, YELP_FLAG,term,lat.toString(),lon.toString(),offset.toString());
+        okHttpHandler.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, CATEGORY_SEARCH_FLAG,term,lat.toString(),lon.toString(),offset.toString());
     }
 
     private void handleCategory(){
@@ -144,6 +169,17 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
         callDialogFragment(restaurantTitle,restaurantCategory);
     }
 
+    private boolean isConnectedToNetwork(Context c){
+        boolean connected = false;
+        ConnectivityManager connectivityManager = (ConnectivityManager) c.getSystemService(c.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        if (activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
+            connected = true;
+        }
+        return connected;
+    }
+
+
     /*Function to call Dialog Fragment*/
     private void callDialogFragment(String title, String category){
         FragmentManager fm = getFragmentManager();
@@ -173,11 +209,8 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
         OkHttpHandler okHttpHandler = new OkHttpHandler(new OkHttpHandler.OkHttpResponse() {
             @Override
             public void processFinished(Response response) {
-                Log.d(TAG,"ENDPOINT");
-                //TODO Make w/ all the needed stuff. Details, Option to navigate,
                 try{
                     String body = response.body().string();
-//                    TODO make class to contain JSON data like below.
                     Log.d(TAG,"Response data: " + body);
                     SearchRestaurantsResults searchRestaurants = gson.fromJson(body, SearchRestaurantsResults.class);
                     Intent intent = new Intent(getActivity().getBaseContext(),ChooseRestaurantActivity.class);
@@ -191,7 +224,8 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
 
             }
         });
-        okHttpHandler.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, YELP_FLAG,term,lat.toString(),lon.toString(),offset.toString());
+        //The category is used both as a term and a category for the call.
+        okHttpHandler.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, RESTAURANT_SEARCH_FLAG,term,lat.toString(),lon.toString(),offset.toString(),term);
     }
 
     /*If answered no on Dialog frag, iterate index and search again.*/

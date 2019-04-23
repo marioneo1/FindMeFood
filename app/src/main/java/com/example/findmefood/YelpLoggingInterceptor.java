@@ -1,5 +1,6 @@
 package com.example.findmefood;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.example.findmefood.models.ApiKey;
@@ -15,6 +16,8 @@ class YelpLoggingInterceptor implements Interceptor {
     private String tokenType;
     private static final String TAG = YelpLoggingInterceptor.class.getName();
     private Logger logger;
+    private Context context;
+
     public ApiKey apiKey = new ApiKey("V1zoNqS9vcPyhFETp-mWNz49yuiRsJo9fBzpc1Ib2ONFsszZHIfT6-wG7gLS9Ok_ZrFT2sLiHDkILDW0Al-LKlo8O2fy_XfJFzVQPy8AxavUw-i-gEMeyjaN6BzMWnYx", "Bearer ");
 
     @Override

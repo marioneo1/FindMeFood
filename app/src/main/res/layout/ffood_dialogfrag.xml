@@ -1,85 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:minHeight="1000dp"
-    android:minWidth="1000dp">
+    android:layout_height="610dp"
+    android:minHeight="610dp"
+    android:minWidth="1000dp"
+    android:background="@drawable/rectangle"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp"
-        android:background="@drawable/rectangle">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:baselineAligned="true"
             android:orientation="vertical"
-            android:background="@color/colorPrimaryDialog"
-            android:gravity="center"
+            android:background="@color/colorWhite"
+            android:gravity="fill"
             >
-
-            <TextView
-                android:id="@+id/heading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="Are you interested in..."
-                android:textColor="@color/colorWhite"
-                android:textSize="40sp"/>
-
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:background="@color/colorWhite">
-                <TextView
-                    android:id="@+id/category"
+                android:layout_height="120dp">
+                <FrameLayout
+                    android:id="@+id/header_container"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_marginTop="20dp"
-                    android:text="Japanese and Korean Food"
-                    android:layout_centerInParent="true"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorComplementDialog"
-                    android:background="#FFFFFF"
-                    android:textSize="50sp" />
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:background="@color/colorPrimaryDialog">
+                    <TextView
+                        android:id="@+id/heading"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Are you interested in..."
+                        android:textColor="@color/colorWhite"
+                        android:textSize="40sp"/>
+
+                </FrameLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/colorBorder"
+                    android:layout_alignBottom="@id/header_container"/>
             </RelativeLayout>
-
-
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:background="@color/colorComplementDialog"
-                >
+                android:layout_height="400dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:padding="0dp"
+                    android:background="@color/colorWhite">
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:padding="10dp"
+                        android:layout_centerInParent="true">
 
-                <TextView
-                    android:id="@+id/action_no"
-                    android:layout_width="0dp"
-                    android:layout_height="90dp"
-                    android:background="@drawable/rectangle"
-                    android:backgroundTint="@color/colorPrimaryDialog"
-                    android:text="No"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="50sp"
-                    android:layout_weight="1"
-                    />
+                        <TextView
+                            android:id="@+id/category"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:autoSizeTextType="uniform"
+                            android:text="Japanese and Korean Food"
+                            android:textAlignment="center"
+                            android:textColor="@color/colorComplementDialog"
+                            android:textSize="40sp" />
 
-                <TextView
-                    android:id="@+id/action_yes"
-                    android:layout_width="0dp"
-                    android:layout_height="90dp"
-                    android:text="Yes"
-                    android:textAlignment="center"
-                    android:background="@drawable/rectangle"
-                    android:backgroundTint="@color/colorPrimaryDialog"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="50sp"
-                    android:layout_weight="1"/>
-            </LinearLayout>
+                    </FrameLayout>
+                </RelativeLayout>
+            </FrameLayout>
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="90dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    >
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:id="@+id/action_no"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/rectangle_red"
+                            android:text="No"
+                            android:textAlignment="center"
+                            android:textColor="@color/dialog_text_color_no"
+                            android:autoSizeTextType="uniform"
+                            android:layout_centerInParent="true"
+                            />
+
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:padding="10dp">
+                        <TextView
+                            android:id="@+id/action_yes"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="Yes"
+                            android:textAlignment="center"
+                            android:background="@drawable/rectangle_green"
+                            android:textColor="@color/dialog_text_color_yes"
+                            android:autoSizeTextType="uniform"
+                            android:layout_centerInParent="true"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </FrameLayout>
+
         </LinearLayout>
 
     </RelativeLayout>

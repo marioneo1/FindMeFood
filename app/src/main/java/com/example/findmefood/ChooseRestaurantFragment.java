@@ -23,9 +23,7 @@ public class ChooseRestaurantFragment extends Fragment{
     private static final String TAG = ChooseRestaurantFragment.class.getName();
     public static final String RESTAURANT = "RESTAURANT";
     public enum Mode {
-
         DRIVE("d"),BIKE("b"),MOTOR("l"),WALK("w");
-
         private String mode;
 
             Mode(String theMode){
@@ -39,8 +37,6 @@ public class ChooseRestaurantFragment extends Fragment{
 
     public static final ChooseRestaurantFragment newInstance(Restaurant restaurant){
         ChooseRestaurantFragment mFrag = new ChooseRestaurantFragment();
-        String name = restaurant.getName();
-        Coordinates coordinates = restaurant.getCoordinates();
         Bundle bundle = new Bundle();
         bundle.putSerializable(RESTAURANT,restaurant);
         Log.d(TAG,"New Instance");
@@ -55,6 +51,7 @@ public class ChooseRestaurantFragment extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final Restaurant restaurant = (Restaurant) getArguments().getSerializable(RESTAURANT);
         final String name =  restaurant.getName();
+        final String url = restaurant.getUrl();
         final Coordinates coordinates = restaurant.getCoordinates();
         View v = inflater.inflate(R.layout.fragment_ff_chooserestaurant,container,false);
         TextView mTextView = (TextView)v.findViewById(R.id.cr_textview);
@@ -63,6 +60,7 @@ public class ChooseRestaurantFragment extends Fragment{
         Log.d(TAG,"Restaurant name: " + name);
         Log.d(TAG,"Coordinates" + coordinates.toString());
         mTextView.setText(name);
+        //Todo: Add more information in screen
 
 
         mActionNavigate.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +71,7 @@ public class ChooseRestaurantFragment extends Fragment{
                 Double lat = coordinates.getLatitude();
                 Double lon = coordinates.getLongitude();
 
+                //Make uri, and call Google Maps, passing the uri in.
                 Uri gmmIntentUri = Uri.parse("google.navigation:q=" +lat.toString()+ "," + lon.toString()
                         + "&mode="+ Mode.DRIVE.getMode());
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
@@ -86,6 +85,9 @@ public class ChooseRestaurantFragment extends Fragment{
             public void onClick(View v) {
                 //Launch Information Activity
                 //TODO
+                Intent yelpSiteIntent = new Intent(Intent.ACTION_VIEW);
+                yelpSiteIntent.setData(Uri.parse(url));
+                startActivity(yelpSiteIntent);
             }
         });
 

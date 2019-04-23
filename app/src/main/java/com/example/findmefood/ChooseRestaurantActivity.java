@@ -21,12 +21,20 @@ public class ChooseRestaurantActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_restaurant);
+
+        //Get incoming data.
         Intent i = getIntent();
         SearchRestaurantsResults restaurantsResults = (SearchRestaurantsResults)i.getSerializableExtra("restaurantSearchResult");
         Log.d(TAG,"Search Restaurant results:" + restaurantsResults.toString());
         List<Restaurant> restaurants = restaurantsResults.getBusinesses();
+
+        //Initialize and get a list of fragments, assigning restaurant to each one.
         List<Fragment> fragments = getFragments(restaurants);
+
+        //Add the list of fragments in the adapter.
         foodPageAdapter = new FoodPageAdapter(getSupportFragmentManager(),fragments);
+
+        //Add to the view pager, which will display all the items inside the adapter
         ViewPager pager = findViewById(R.id.ff_viewpager);
         pager.setAdapter(foodPageAdapter);
 
@@ -35,6 +43,8 @@ public class ChooseRestaurantActivity extends FragmentActivity {
     private List<Fragment> getFragments(List<Restaurant> restaurantList){
         List<Fragment> fragmentList = new ArrayList<Fragment>();
         for (Restaurant restaurant:restaurantList){
+            //Make a fragment, pass the restaurant data to the function inside the fragment
+            //return fragment and add to list.
             fragmentList.add(ChooseRestaurantFragment.newInstance(restaurant));
         }
 
