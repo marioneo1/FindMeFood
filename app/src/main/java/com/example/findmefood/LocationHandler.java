@@ -93,53 +93,11 @@ public class LocationHandler implements LocationListener{
 
     @Override
     public void onLocationChanged(Location location) {
-        Toast.makeText(mContext, "onLocationChanged", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(mContext, "onLocationChanged", Toast.LENGTH_SHORT).show();
         mLocation = location; //Set location to new location if changed
         Log.d(TAG, " loc changed, new lat: " + mLocation.getLatitude()
                 + " lon: " + mLocation.getLongitude());
     }
-
-    //    private static void startLocationUpdates(){
-//        mLocationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-//        if (mLocationListener == null) {
-//            // Define a listener that responds to location updates
-//            mLocationListener = new LocationListener() {
-//                public void onLocationChanged(Location location) {
-//                    Log.d(TAG, "lat: " + location.getLatitude()
-//                            + " lon: " + location.getLongitude());
-//                    mLocation = location;
-//                }
-//                public void onStatusChanged(String provider, int status, Bundle
-//                        extras) { }
-//                public void onProviderEnabled(String provider) { }
-//                public void onProviderDisabled(String provider) { }
-//            };
-//        }
-//        if (ContextCompat.checkSelfPermission(mContext, FINE_LOCATION) != GRANTED){
-//            Toast.makeText(mContext, "Please Enable GPS and Internet", Toast.LENGTH_SHORT).show();
-//            ActivityCompat.requestPermissions(getActivity(mContext), LOCATION_PERMISSIONS, REQUEST_CODE);
-//        }
-//        Log.d(TAG, "requesting updates");
-//
-//        Location location =
-//                mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//
-//        if (location != null) {
-//            Log.d(TAG, "last known lat: " + location.getLatitude()
-//                    + " lon: " + location.getLongitude());
-//                    Toast.makeText(mContext, "Found Location", Toast.LENGTH_SHORT).show();
-//            mLocation = location;
-//        }
-//
-//        Log.d(TAG, "requesting updates");
-//
-//        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1,
-//                5, mLocationListener);
-//    }
-
-    //    private void setRecentLocation(Location lastLocation){
-    //
-    //    }
 
     /*Required methods. Not used for anything*/
     @Override

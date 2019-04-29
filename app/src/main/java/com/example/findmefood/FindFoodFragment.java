@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.findmefood.models.Restaurant;
 import com.example.findmefood.models.SearchRestaurantsResults;
 import com.example.findmefood.models.YelpCategory;
+import com.example.findmefood.utility.TextToSpeechHandler;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -53,6 +54,7 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
     private static String RESTAURANT_SEARCH_FLAG = "1";
     private static Context mContext;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -74,6 +76,7 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
                 //If internet is available
                 if(isConnectedToNetwork(mContext)){
                     mProgressBar.setVisibility(View.VISIBLE);
+                    start_ffood_button.setClickable(false);
                     //Reset values back.
                     index=0;
                     offset_calls=0;
@@ -106,8 +109,7 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
             public void processFinished(Response response) {
                 mProgressBar.setVisibility(View.INVISIBLE);
                 try{
-                    /* TODO Fill in the needed details
-                     *  Blacklist*/
+                    /* TODO Blacklist*/
                     if (response != null){
                         String body = response.body().string();
                         Log.d(TAG,"Response data: " + body);
@@ -117,6 +119,7 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
                     else{
                         Log.d(TAG,"Null body");
                         Toast.makeText(mContext,"Couldn't find nearby locations, please make sure you're connected to a reliable internet source",Toast.LENGTH_LONG).show();
+                        start_ffood_button.setClickable(true);
                     }
                 }
                 catch (IOException e){
@@ -124,22 +127,7 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
                 }
             }
         });
-        okHttpHandler.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, CATEGORY_SEARCH_FLAG,term,lat.toString(),lon.toString(),offset.toString());
-    }
-
-    private void handleCategory(){
-        if(index < restaurant_categories.size()){
-            selectFoodCategory(restaurant_category_titles,restaurant_categories,index);
-        }
-        else{
-            Log.d(TAG,"Offset calls" + offset_calls);
-            if(offset_calls >= OFFSET_LIMIT){ //Api Limitation
-                Toast.makeText(getActivity(), "End of category. Find Food again?", Toast.LENGTH_SHORT).show();
-            }
-            else{
-                requestFoodCategory();
-            }
-        }
+        okHttpHandler.execute(CATEGORY_SEARCH_FLAG,term,lat.toString(),lon.toString(),offset.toString());
     }
 
     private void parseCategoryResponseBody(String body){
@@ -162,10 +150,31 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
         Log.d(TAG,"Restaurant Title size" + restaurant_categories.size());
     }
 
+    private void handleCategory(){
+        if(index < restaurant_categories.size()){
+            selectFoodCategory(restaurant_category_titles,restaurant_categories,index);
+        }
+        else{
+            Log.d(TAG,"Offset calls" + offset_calls);
+            if(offset_calls >= OFFSET_LIMIT){ //Api Limitation
+                Toast.makeText(getActivity(), "End of category. Find Food again?", Toast.LENGTH_SHORT).show();
+                start_ffood_button.setClickable(true);
+            }
+            else{
+                requestFoodCategory();
+            }
+        }
+    }
+
     private void selectFoodCategory(ArrayList<String> rest_titles,ArrayList<String> rest_categories, int i){
         String restaurantTitle = rest_titles.get(i);
         System.out.println("Title " + restaurantTitle);
         String restaurantCategory = rest_categories.get(i);
+//
+        if(index == 0) { //Only say this on the first instance
+            TextToSpeechHandler ttsh = new TextToSpeechHandler(getContext(), "Are you interested in...");
+            ttsh.speak();
+        }
         callDialogFragment(restaurantTitle,restaurantCategory);
     }
 
@@ -205,6 +214,7 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
         mTextView.setText(input);
         String term = input;
         Integer offset = 0;
+        start_ffood_button.setClickable(true);
 
         OkHttpHandler okHttpHandler = new OkHttpHandler(new OkHttpHandler.OkHttpResponse() {
             @Override

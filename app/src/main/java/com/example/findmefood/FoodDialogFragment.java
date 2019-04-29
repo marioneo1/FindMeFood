@@ -2,6 +2,7 @@ package com.example.findmefood;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -10,6 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.example.findmefood.utility.TextToSpeechHandler;
+
+import java.util.Locale;
 
 public class FoodDialogFragment extends DialogFragment {
 
@@ -22,6 +27,7 @@ public class FoodDialogFragment extends DialogFragment {
     public OnInputSelected mOnInputSelected;
     private TextView mCategory;
     private TextView mActionYes, mActionNo;
+    private TextToSpeech textToSpeech;
 
     @Nullable
     @Override
@@ -35,6 +41,8 @@ public class FoodDialogFragment extends DialogFragment {
         mCategory = view.findViewById(R.id.category);
         mCategory.setText(title);
 
+        TextToSpeechHandler ttsh = new TextToSpeechHandler(getContext(), title);
+        ttsh.speak();
 
         mActionNo.setOnClickListener(new View.OnClickListener() {
             @Override
