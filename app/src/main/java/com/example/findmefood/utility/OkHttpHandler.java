@@ -1,10 +1,8 @@
-package com.example.findmefood;
+package com.example.findmefood.utility;
 
 import android.os.AsyncTask;
 import android.util.Log;
 import com.example.findmefood.models.ApiKey;
-
-import java.util.concurrent.TimeUnit;
 
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;

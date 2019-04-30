@@ -1,11 +1,7 @@
 package com.example.findmefood;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -67,7 +63,11 @@ public class ChooseRestaurantFragment extends Fragment{
         Log.d(TAG,"Restaurant name: " + name);
         Log.d(TAG,"Coordinates" + coordinates.toString());
         mTextView.setText(name);
-        Picasso.get().load(image_url).fit().into(imageView);
+        Log.d(TAG,"Image url :" + image_url);
+        if(image_url != null && !(image_url.isEmpty())){
+            Picasso.get().load(image_url).error(R.mipmap.ic_launcher).placeholder(R.drawable.cr_placeholder).fit().centerCrop().into(imageView);
+        }
+
         //Todo: Add more information in screen
 
 

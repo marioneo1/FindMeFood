@@ -2,13 +2,12 @@ package com.example.findmefood.utility;
 
 import android.content.Context;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.util.Log;
 import java.util.Locale;
 
-import static com.example.findmefood.MainActivity.TAG;
-
-
-public class TextToSpeechHandler {
+public class TextToSpeechHandler{
+    private static final String TAG = TextToSpeechHandler.class.getName();
     private Context mContext;
     private TextToSpeech textToSpeech;
     private String mTextToSpeak;
@@ -16,9 +15,6 @@ public class TextToSpeechHandler {
     public TextToSpeechHandler(Context context, String textToSpeak){
         mContext = context;
         mTextToSpeak = textToSpeak;
-    }
-
-    public void speak(){
         textToSpeech = new TextToSpeech(mContext, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -28,15 +24,19 @@ public class TextToSpeechHandler {
                         Log.e(TAG, "Text to speech: Language not supported");
                     }
                     else{
-                        String utteranceId = this.hashCode() + "";
-                        textToSpeech.speak(mTextToSpeak,TextToSpeech.QUEUE_FLUSH,null, utteranceId);
+                        speak();
                     }
                 }
                 else{
                     Log.e(TAG, "Text to speech: Init failed");
                 }
-
             }
         });
+    }
+
+    public void speak(){
+        String utteranceId = this.hashCode() + "";
+        Log.d(TAG,"Utterance id:" + utteranceId);
+        textToSpeech.speak(mTextToSpeak,TextToSpeech.QUEUE_FLUSH,null, utteranceId);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.findmefood;
+package com.example.findmefood.utility;
 
 import android.content.Context;
 import android.util.Log;

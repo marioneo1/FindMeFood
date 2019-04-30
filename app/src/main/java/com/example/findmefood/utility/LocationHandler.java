@@ -1,4 +1,4 @@
-package com.example.findmefood;
+package com.example.findmefood.utility;
 
 import android.Manifest;
 import android.app.Activity;
@@ -52,11 +52,8 @@ public class LocationHandler implements LocationListener{
             Toast.makeText(mContext, "Found Location", Toast.LENGTH_SHORT).show();
             mLocation = location;
         }
-
         Log.d(TAG, "requesting updates");
-
         mLocationManager.requestLocationUpdates(provider,1,2,this);
-//        startLocationUpdates();
     }
 
     public static Double getLat() {

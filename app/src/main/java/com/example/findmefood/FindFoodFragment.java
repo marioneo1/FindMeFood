@@ -1,15 +1,19 @@
 package com.example.findmefood;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +22,11 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.findmefood.models.Restaurant;
 import com.example.findmefood.models.SearchRestaurantsResults;
 import com.example.findmefood.models.YelpCategory;
+import com.example.findmefood.utility.LocationHandler;
+import com.example.findmefood.utility.OkHttpHandler;
 import com.example.findmefood.utility.TextToSpeechHandler;
 import com.google.gson.Gson;
 
@@ -53,6 +58,12 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
     private static String CATEGORY_SEARCH_FLAG = "0";
     private static String RESTAURANT_SEARCH_FLAG = "1";
     private static Context mContext;
+    private static String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
+    private static String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
+    private static int GRANTED = PackageManager.PERMISSION_GRANTED;
+    private static final String[] LOCATION_PERMISSIONS =
+            {FINE_LOCATION, COARSE_LOCATION};
+    private static final int REQUEST_CODE = 87;
 
 
     @Nullable
@@ -64,10 +75,16 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
         mTextView = view.findViewById(R.id.ffoodtextview);
         mContext = getContext();
         gson = new Gson();
-        locationHandler = new LocationHandler(getActivity());
-        lat = locationHandler.getLat();
-        lon = locationHandler.getLon();
 
+        if (ContextCompat.checkSelfPermission(mContext, FINE_LOCATION) != GRANTED){
+            Toast.makeText(mContext, "Please Enable GPS and Internet", Toast.LENGTH_SHORT).show();
+            ActivityCompat.requestPermissions(getActivity(), LOCATION_PERMISSIONS, REQUEST_CODE);
+        }
+        else{
+            locationHandler = new LocationHandler(getActivity());
+            lat = locationHandler.getLat();
+            lon = locationHandler.getLon();
+        }
 
         start_ffood_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,7 +209,6 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
     /*Function to call Dialog Fragment*/
     private void callDialogFragment(String title, String category){
         FragmentManager fm = getFragmentManager();
-
         /*Create Dialog Fragment*/
         FoodDialogFragment newFragment = new FoodDialogFragment();
 
