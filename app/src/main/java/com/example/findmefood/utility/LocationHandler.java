@@ -42,14 +42,14 @@ public class LocationHandler implements LocationListener{
             Toast.makeText(mContext, "Please Enable GPS and Internet", Toast.LENGTH_SHORT).show();
             ActivityCompat.requestPermissions(getActivity(mContext), LOCATION_PERMISSIONS, REQUEST_CODE);
         }
-        Toast.makeText(mContext, "Success! Running GPS", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(mContext, "Success! Running GPS", Toast.LENGTH_SHORT).show();
 
         /*Set location to last known*/
         Location location = mLocationManager.getLastKnownLocation(provider);
         if (location != null) {
             Log.d(TAG, "last known lat: " + location.getLatitude()
                     + " lon: " + location.getLongitude());
-            Toast.makeText(mContext, "Found Location", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(mContext, "Found Location", Toast.LENGTH_SHORT).show();
             mLocation = location;
         }
         Log.d(TAG, "requesting updates");

@@ -29,7 +29,6 @@ import com.example.findmefood.utility.LocationHandler;
 import com.example.findmefood.utility.OkHttpHandler;
 import com.example.findmefood.utility.TextToSpeechHandler;
 import com.google.gson.Gson;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -46,6 +45,7 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
     TextView mTextView;
     ProgressBar mProgressBar;
     public static int index = 0;
+    private static OkHttpHandler okHttpHandler;
     private static ArrayList<String> restaurant_categories;
     private static ArrayList<String> restaurant_category_titles;
     private static Double lon;
@@ -121,7 +121,7 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
         lon = locationHandler.getLon();
         System.out.println("Latitude2 " +lat + "Longitude " + lon);
 
-        OkHttpHandler okHttpHandler = new OkHttpHandler(new OkHttpHandler.OkHttpResponse() {
+         okHttpHandler = new OkHttpHandler(new OkHttpHandler.OkHttpResponse() {
             @Override
             public void processFinished(Response response) {
                 mProgressBar.setVisibility(View.INVISIBLE);
@@ -130,8 +130,10 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
                     if (response != null){
                         String body = response.body().string();
                         Log.d(TAG,"Response data: " + body);
-                        parseCategoryResponseBody(body);
-                        handleCategory();
+                        if(!body.isEmpty()) {
+                            parseCategoryResponseBody(body);
+                            handleCategory();
+                        }
                     }
                     else{
                         Log.d(TAG,"Null body");
@@ -267,6 +269,13 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
         handleCategory();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(okHttpHandler != null && okHttpHandler.getStatus() == AsyncTask.Status.RUNNING) {
+            okHttpHandler.cancel(true);
+            Log.d(TAG, "Cancelled OkHTTPAsync");
+        }
 
-
+    }
 }

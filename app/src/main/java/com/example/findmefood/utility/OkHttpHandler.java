@@ -10,6 +10,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class OkHttpHandler extends AsyncTask<String,Void,Response> {
+    private static String CATEGORY_SEARCH_FLAG = "0";
+    private static String RESTAURANT_SEARCH_FLAG = "1";
+    private static String FIND_BY_NAME_FLAG = "2";
     private static final String TAG = OkHttpHandler.class.getName();
     public ApiKey apiKey = new ApiKey("V1zoNqS9vcPyhFETp-mWNz49yuiRsJo9fBzpc1Ib2ONFsszZHIfT6-wG7gLS9Ok_ZrFT2sLiHDkILDW0Al-LKlo8O2fy_XfJFzVQPy8AxavUw-i-gEMeyjaN6BzMWnYx", "Bearer ");
     public interface OkHttpResponse {
@@ -33,14 +36,14 @@ public class OkHttpHandler extends AsyncTask<String,Void,Response> {
     protected Response doInBackground(String... params){
         //TODO Maybe the alias to search.
 
-        String flag = params[0], term, latitude, longitude, offset, destination_address, categories;
+        String flag = params[0], term, latitude, longitude, offset, destination_address, categories, location;
 //        String term = params[0], latitude = params[1], longitude = params[2], offset = params[3], flag;
 
         HttpUrl url;
 //        OkHttpClient client;
 
         /*For Category API call*/
-        if(flag.contains("0")){
+        if(flag.contains(CATEGORY_SEARCH_FLAG)){
             term = params[1];
             latitude = params[2];
             longitude = params[3];
@@ -65,7 +68,7 @@ public class OkHttpHandler extends AsyncTask<String,Void,Response> {
 
         }
         /*For Restaurant API Call*/
-        else{
+        else if (flag.contains(RESTAURANT_SEARCH_FLAG)){
             term = params[1];
             latitude = params[2];
             longitude = params[3];
@@ -85,6 +88,22 @@ public class OkHttpHandler extends AsyncTask<String,Void,Response> {
                     .addQueryParameter("sort_by", "distance")
                     .addQueryParameter("offset", offset)
                     .addQueryParameter("categories",categories)
+                    .build();
+        }
+        else{
+            term = params[1];
+            location = params[2];
+
+            url = new HttpUrl.Builder()
+                    .scheme("https")
+                    .host("api.yelp.com")
+                    .addPathSegment("v3")
+                    .addPathSegment("businesses")
+                    .addPathSegment("search")
+                    .addQueryParameter("term",term)
+                    .addQueryParameter("location",location)
+                    .addQueryParameter("limit","50")
+                    .addQueryParameter("sort_by", "distance")
                     .build();
         }
 

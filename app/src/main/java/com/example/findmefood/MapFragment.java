@@ -1,6 +1,8 @@
 package com.example.findmefood;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -36,12 +38,16 @@ public class MapFragment extends Fragment implements GoogleMap.OnMyLocationButto
             {FINE_LOCATION, COARSE_LOCATION};
     private static final int REQUEST_CODE = 100;
     double lat,lng;
+    private Context mContext;
+    private Activity mActivity;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_map,null);
+        mContext = getContext();
+        mActivity = getActivity();
 
 
         return mView;
@@ -77,7 +83,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMyLocationButto
             mMap.setMyLocationEnabled(true);
         }
         else{
-            ActivityCompat.requestPermissions(getActivity(), LOCATION_PERMISSIONS, REQUEST_CODE);
+            ActivityCompat.requestPermissions(mActivity, LOCATION_PERMISSIONS, REQUEST_CODE);
         }
         mMap.setOnMyLocationClickListener(this);
         mMap.setOnMyLocationButtonClickListener(this);
@@ -89,9 +95,8 @@ public class MapFragment extends Fragment implements GoogleMap.OnMyLocationButto
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setCompassEnabled(true);
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
-
-            fusedLocationProviderClient.getLastLocation().addOnSuccessListener(getActivity(),new OnSuccessListener<Location>() {
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mContext);
+            fusedLocationProviderClient.getLastLocation().addOnSuccessListener(mActivity,new OnSuccessListener<Location>() {
                 @Override
                 public void onSuccess(Location location) {
                     if (location!= null){

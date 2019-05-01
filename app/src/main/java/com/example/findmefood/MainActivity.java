@@ -25,9 +25,9 @@ public class MainActivity extends AppCompatActivity {
 
                 /*Fragment selection*/
                 switch (menuItem.getItemId()) {
-                    case R.id.action_home:
-                        Log.d(TAG, "OnCreate: Home");
-                        fragment = new HomeFragment();
+                    case R.id.action_search:
+                        Log.d(TAG, "OnCreate: Search");
+                        fragment = new SearchFragment();
                         break;
                     case R.id.action_findfood:
                         Log.d(TAG, "OnCreate: Find Food");
@@ -41,9 +41,8 @@ public class MainActivity extends AppCompatActivity {
                 return loadFragment(fragment);
             }
         });
-
         /*Set Home fragment as default selected.*/
-        bottomNavigationView.setSelectedItemId(R.id.action_home);
+        bottomNavigationView.setSelectedItemId(R.id.action_findfood);
     }
 
     /*Method to call to load the fragment.*/
