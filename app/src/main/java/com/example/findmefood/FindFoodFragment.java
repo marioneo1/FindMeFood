@@ -234,7 +234,7 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
         Integer offset = 0;
         start_ffood_button.setClickable(true);
 
-        OkHttpHandler okHttpHandler = new OkHttpHandler(new OkHttpHandler.OkHttpResponse() {
+         okHttpHandler = new OkHttpHandler(new OkHttpHandler.OkHttpResponse() {
             @Override
             public void processFinished(Response response) {
                 try{
@@ -253,7 +253,7 @@ public class FindFoodFragment extends Fragment implements FoodDialogFragment.OnI
             }
         });
         //The category is used both as a term and a category for the call.
-        okHttpHandler.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, RESTAURANT_SEARCH_FLAG,term,lat.toString(),lon.toString(),offset.toString(),term);
+        okHttpHandler.execute(RESTAURANT_SEARCH_FLAG,term,lat.toString(),lon.toString(),offset.toString(),term);
     }
 
     /*If answered no on Dialog frag, iterate index and search again.*/

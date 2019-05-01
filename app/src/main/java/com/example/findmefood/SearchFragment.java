@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -35,6 +36,7 @@ public class SearchFragment extends Fragment {
     RecyclerView recyclerView;
     List<Restaurant> restaurants;
     private static final String TAG = SearchFragment.class.getName();
+    private static final String URL = "URL";
     private static String FIND_BY_NAME_FLAG = "2";
     private static Gson gson;
     private static View view;
@@ -91,8 +93,8 @@ public class SearchFragment extends Fragment {
                                 @Override
                                 public void onItemClick(Restaurant restaurant) {
                                     String url = restaurant.getUrl();
-                                    Intent yelpSiteIntent = new Intent(Intent.ACTION_VIEW);
-                                    yelpSiteIntent.setData(Uri.parse(url));
+                                    Intent yelpSiteIntent = new Intent(getActivity().getBaseContext(), WebViewActivity.class);
+                                    yelpSiteIntent.putExtra(URL,url);
                                     startActivity(yelpSiteIntent);
                                 }
                             }));

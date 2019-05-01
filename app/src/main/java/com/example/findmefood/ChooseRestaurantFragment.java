@@ -23,6 +23,7 @@ public class ChooseRestaurantFragment extends Fragment{
     private static ImageView imageView;
     private static final String TAG = ChooseRestaurantFragment.class.getName();
     public static final String RESTAURANT = "RESTAURANT";
+    private static final String URL = "URL";
     public enum Mode {
         DRIVE("d"),BIKE("b"),MOTOR("l"),WALK("w");
         private String mode;
@@ -93,8 +94,11 @@ public class ChooseRestaurantFragment extends Fragment{
             public void onClick(View v) {
                 //Launch Information Activity
                 //TODO
-                Intent yelpSiteIntent = new Intent(Intent.ACTION_VIEW);
-                yelpSiteIntent.setData(Uri.parse(url));
+//                Intent yelpSiteIntent = new Intent(Intent.ACTION_VIEW);
+//                yelpSiteIntent.setData(Uri.parse(url));
+//                startActivity(yelpSiteIntent);
+                Intent yelpSiteIntent = new Intent(getActivity().getBaseContext(), WebViewActivity.class);
+                yelpSiteIntent.putExtra(URL,url);
                 startActivity(yelpSiteIntent);
             }
         });
