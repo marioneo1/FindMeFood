@@ -69,6 +69,17 @@
                             android:textSize="40sp" />
 
                     </FrameLayout>
+
+                    <ToggleButton
+                        android:id="@+id/toggleButton"
+                        android:layout_width="150dp"
+                        android:layout_height="75dp"
+                        android:textOff="Don't suggest this again"
+                        android:textOn="Category blacklisted"
+                        android:layout_centerHorizontal="true"
+                        android:text="ToggleButton" />
+
+
                 </RelativeLayout>
             </FrameLayout>
             <FrameLayout

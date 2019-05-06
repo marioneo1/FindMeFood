@@ -1,12 +1,15 @@
 package com.example.findmefood;
 
 
+import android.content.Intent;
+import android.preference.ListPreference;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 
 
@@ -43,6 +46,23 @@ public class MainActivity extends AppCompatActivity {
         });
         /*Set Home fragment as default selected.*/
         bottomNavigationView.setSelectedItemId(R.id.action_findfood);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /*Method to call to load the fragment.*/

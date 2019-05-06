@@ -130,6 +130,8 @@ public class SearchFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        search_progress_bar.setVisibility(View.INVISIBLE);
+        progress_text.setHint(R.string.search_text);
         if(okHttpHandler != null && okHttpHandler.getStatus() == AsyncTask.Status.RUNNING) {
             okHttpHandler.cancel(true);
             Log.d(TAG, "Cancelled OkHTTPAsync");

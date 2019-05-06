@@ -15,8 +15,10 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.findmefood.utility.TextToSpeechHandler;
 
@@ -30,15 +32,17 @@ public class FoodDialogFragment extends DialogFragment {
 
 
     public interface OnInputSelected{
-        void yes(String input);
-        void no();
+        void yes(String category, Boolean blacklisted, String title);
+        void no(String category, Boolean blacklisted, String title);
     }
 
     private static String TAG = DialogFragment.class.getName();
     public OnInputSelected mOnInputSelected;
     private TextView mCategory;
     private TextView mActionYes, mActionNo;
+    private ToggleButton blacklistToggle;
     private float x1,x2;
+    private static Boolean blacklist_toggled = false;
     static final int MIN_DISTANCE = 150;
     static final int MAX_OFFPATH = 250;
     static final int SWIPE_THRESHOLD_VELOCITY = 200;
@@ -53,74 +57,28 @@ public class FoodDialogFragment extends DialogFragment {
         mActionYes = view.findViewById(R.id.action_yes);
         mActionNo = view.findViewById(R.id.action_no);
         mCategory = view.findViewById(R.id.category);
+        blacklistToggle = view.findViewById(R.id.toggleButton);
         mCategory.setText(title);
         TextToSpeechHandler ttsh = new TextToSpeechHandler(getContext(), title);
         ttsh.speak();
 
-        final GestureDetector gesture = new GestureDetector(getActivity(), new GestureDetector.SimpleOnGestureListener(){
+        blacklistToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public boolean onDown(MotionEvent e) {
-                return super.onDown(e);
-            }
-
-            @Override
-            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                if(Math.abs(e1.getY()- e2.getY()) > MAX_OFFPATH){
-                    return false;
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    blacklist_toggled = true;
                 }
-                if(e1.getX()- e2.getX() > MIN_DISTANCE && Math.abs(velocityX)>SWIPE_THRESHOLD_VELOCITY){
-                    Log.d(TAG,"RIGHT TO LEFT");
+                else{
+                    blacklist_toggled = false;
                 }
-                else if(e2.getX()- e1.getX() > MIN_DISTANCE && Math.abs(velocityX)>SWIPE_THRESHOLD_VELOCITY){
-                    Log.d(TAG,"LEFT TO RIGHT");
-                }
-                return super.onFling(e1, e2, velocityX, velocityY);
             }
         });
-
-        view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return gesture.onTouchEvent(event);
-            }
-        });
-
-//        view.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                int action = event.getActionMasked();
-//                switch (action){
-//                    case(MotionEvent.ACTION_DOWN):
-//                        x1 = event.getX();
-//                        break;
-//                    case (MotionEvent.ACTION_UP):
-//                        x2 = event.getX();
-//                        float diff_x = x2-x1;
-//
-//                        if (Math.abs(diff_x) > MIN_DISTANCE){
-//                            if(x2>x1){
-//                                Log.d(TAG, "Yes swiped (Swiped right)" );
-//                                mOnInputSelected.yes(category);
-//                                getDialog().dismiss();
-//                            }
-//                            else{
-//                                Log.d(TAG, "No swiped (Swiped left)" );
-//                                mOnInputSelected.no();
-//                                getDialog().dismiss();
-//                            }
-//                        }
-//                }
-//
-//                return v.onTouchEvent(event);
-//            }
-//        });
-
 
         mActionNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "No clicked" );
-                mOnInputSelected.no();
+                mOnInputSelected.no(category, blacklist_toggled, title);
                 getDialog().dismiss();
             }
         });
@@ -130,7 +88,7 @@ public class FoodDialogFragment extends DialogFragment {
             public void onClick(View v){
                 Log.d(TAG, "Yes clicked" );
                 Log.d(TAG, "Category : " + category);
-                mOnInputSelected.yes(category);
+                mOnInputSelected.yes(category, blacklist_toggled, title);
                 getDialog().dismiss();
             }
         });

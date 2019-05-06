@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="56dp">
 
 
+    <ImageView
+        android:id="@+id/ffood_action"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/startffood_container"
+        app:srcCompat="@android:drawable/btn_radio" />
+
     <ProgressBar
         android:id="@+id/ff_progressBar"
         style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:layout_above="@+id/startffood_container"
         android:layout_centerHorizontal="true"
         android:visibility="invisible" />
@@ -30,14 +39,5 @@
             android:text="Find Food" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/ffoodtextview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="false"
-        android:layout_centerInParent="true"
-        android:text="TextView" />
 
 </RelativeLayout>

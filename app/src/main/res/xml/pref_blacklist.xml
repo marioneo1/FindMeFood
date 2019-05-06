@@ -1,0 +1,20 @@
+<PreferenceScreen xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- A 'parent' preference, which enables/disables child preferences (below)
+         when checked/unchecked. -->
+
+    <MultiSelectListPreference
+        android:defaultValue="@array/multilist_preference_default"
+        android:entries="@array/multilist_preference_default"
+        android:entryValues="@array/multilist_preference_values"
+        android:key="multi_select_list_preference_1"
+        android:summary="Unblacklist categories"
+        android:title="Unblacklist" />
+
+    <Preference android:title="Clear Blacklist"
+        android:key="clear_blacklist">
+
+    </Preference>
+
+</PreferenceScreen>
