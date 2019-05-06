@@ -44,6 +44,55 @@
             android:layout_height="match_parent"
             android:alpha="0.4"
             app:srcCompat="@android:drawable/picture_frame" />
+
+        <LinearLayout
+            android:id="@+id/cr_price_container"
+            android:layout_width="match_parent"
+            android:visibility="invisible"
+            android:layout_height="50dp">
+            <TextView
+                android:id="@+id/cr_text_price"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="match_parent"
+                android:autoSizeTextType="uniform"
+                android:text="TextView" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:autoSizeTextType="uniform"
+                android:textAlignment="center"
+                android:text="*"/>
+
+            <TextView
+                android:id="@+id/cr_text_rating"
+                android:autoSizeTextType="uniform"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="match_parent"
+                android:text="TextView" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/cr_text_distance"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/cr_text_address"
+            android:autoSizeTextType="uniform"
+            android:visibility="invisible"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/cr_text_address"
+            android:autoSizeTextType="uniform"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/cr_price_container"
+            android:visibility="invisible"
+            android:text="TextView" />
+
     </RelativeLayout>
 
     <LinearLayout
