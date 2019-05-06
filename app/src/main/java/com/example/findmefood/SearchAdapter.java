@@ -18,7 +18,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public interface OnItemClickListener{
         void onItemClick(Restaurant restaurant);
     }
-
+    private static final int ONE_MILE = 1609;
     private final OnItemClickListener listener;
     private LayoutInflater inflater;
     private final String TAG = SearchAdapter.class.getName();
@@ -50,16 +50,27 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public int getItemCount() {
-        return (!restaurants.isEmpty()) ? restaurants.size():0;
+        if(restaurants != null && (!restaurants.isEmpty()))
+        {
+            return restaurants.size();
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     public class SearchItem extends RecyclerView.ViewHolder {
-        TextView titleTextView;
+        TextView titleTextView, distanceTextView, ratingTextView, phoneNumTextView;
         ImageView restaurantImageView;
         public SearchItem(@NonNull View itemView) {
             super(itemView);
             titleTextView = (TextView) itemView.findViewById(R.id.search_item_title);
             restaurantImageView = (ImageView) itemView.findViewById(R.id.imageView);
+            distanceTextView = (TextView) itemView.findViewById(R.id.search_item_distance);
+            ratingTextView = (TextView) itemView.findViewById(R.id.search_item_rating);
+            phoneNumTextView = (TextView) itemView.findViewById(R.id.search_item_phone);
+
         }
 
         public void bind(final Restaurant restaurant, final OnItemClickListener listener){
@@ -68,6 +79,15 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             if(image_url != null && !(image_url.isEmpty())){
                 Picasso.get().load(image_url).error(R.mipmap.ic_launcher).placeholder(R.drawable.cr_placeholder).fit().centerCrop().into(restaurantImageView);
             }
+            Double distance_val = restaurant.getDistance()/ONE_MILE;
+            String distance = String.format("%.2f mi",distance_val);
+            String rating = restaurant.getRating() + " Stars";
+            String phone_number = restaurant.getDisplay_phone();
+            distanceTextView.setText(distance);
+            ratingTextView.setText(rating);
+            phoneNumTextView.setText(phone_number);
+
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

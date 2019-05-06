@@ -12,9 +12,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.widget.EditText;
@@ -62,6 +64,19 @@ public class SearchFragment extends Fragment {
                 search_button.setVisibility(View.INVISIBLE);
                 progress_text.setHint("Please wait a moment...");
                 search();
+            }
+        });
+        location_input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH){
+                    search_progress_bar.setVisibility(View.VISIBLE);
+                    search_button.setVisibility(View.INVISIBLE);
+                    progress_text.setHint("Please wait a moment...");
+                    search();
+                    return true;
+                }
+                return false;
             }
         });
 
