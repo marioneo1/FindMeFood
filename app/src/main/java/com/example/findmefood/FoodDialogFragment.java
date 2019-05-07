@@ -42,7 +42,7 @@ public class FoodDialogFragment extends DialogFragment {
     private TextView mActionYes, mActionNo;
     private ToggleButton blacklistToggle;
     private float x1,x2;
-    private static Boolean blacklist_toggled = false;
+    private Boolean blacklist_toggled;
     static final int MIN_DISTANCE = 150;
     static final int MAX_OFFPATH = 250;
     static final int SWIPE_THRESHOLD_VELOCITY = 200;
@@ -61,6 +61,7 @@ public class FoodDialogFragment extends DialogFragment {
         mCategory.setText(title);
         TextToSpeechHandler ttsh = new TextToSpeechHandler(getContext(), title);
         ttsh.speak();
+        blacklist_toggled = false;
 
         blacklistToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
